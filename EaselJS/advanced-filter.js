@@ -38,6 +38,8 @@ this.createjs = this.createjs || {};
     /**
      * Adds various mathematical and rendering features to the standard EaselJS Filter object.
      *
+     * To help develop your filter with a realtime preview visit: http://filterfactory.industrialassets.co.uk/
+     *
      * See {{#crossLink "Filter"}}{{/crossLink}} for an more information on applying filters.
      * @class AdvancedFilter
      * @extends Filter
@@ -84,7 +86,40 @@ this.createjs = this.createjs || {};
         }
 
 
-        // Rendering code goes here
+        // Rendering Loop --------------------
+        for (var i = 0; i < l; i += 4) {
+            var pixelindex = i / 4;
+            var image = {
+                width: width,
+                height: height
+            };
+            var pixel = {
+                y: Math.floor(pixelindex / image.width) + sectionStartY,
+                x: pixelindex - (Math.floor(pixelindex / image.width) * image.width) + sectionStartX
+            };
+            var src = {
+                r: data[i],
+                g: data[i + 1],
+                b: data[i + 2],
+                a: data[i + 3]
+            };
+            var dst = {
+                r: data[i],
+                g: data[i + 1],
+                b: data[i + 2],
+                a: data[i + 3]
+            };
+
+
+            // ## Custom rendering code goes here
+
+            data[i] = dst.r;
+            data[i + 1] = dst.g;
+            data[i + 2] = dst.b;
+            data[i + 3] = dst.a;
+        }
+
+
 
 
         targetCtx.putImageData(imageData, targetX, targetY);
@@ -93,8 +128,12 @@ this.createjs = this.createjs || {};
     };
 
 
-    /* Advanced math functions                             */
-    /* -------------------------------------------------------  */
+    /**
+    * Advanced math functions                                 
+    *
+    * This is only called if the Math functions don't already exist
+    *
+    */
 
     p.initMath = function() {
 
