@@ -93,22 +93,22 @@ this.createjs = this.createjs || {};
                 width: width,
                 height: height
             };
-            var pixel = {
+            var pixel = new float2(
                 y: Math.floor(pixelindex / image.width) + sectionStartY,
                 x: pixelindex - (Math.floor(pixelindex / image.width) * image.width) + sectionStartX
-            };
-            var src = {
+            );
+            var src = new float4(
                 r: data[i],
                 g: data[i + 1],
                 b: data[i + 2],
                 a: data[i + 3]
-            };
-            var dst = {
+            );
+            var dst = new float4(
                 r: data[i],
                 g: data[i + 1],
                 b: data[i + 2],
                 a: data[i + 3]
-            };
+            );
 
 
             // ## Custom rendering code goes here
@@ -137,17 +137,43 @@ this.createjs = this.createjs || {};
 
     p.initMath = function() {
 
-        // Clamp
+        // Clamp --------------------
         Math.clamp = function(val, min, max) {
             return Math.max(min, Math.min(max, val));
         }
 
-        // Lerp
+        // Lerp --------------------
         Math.lerp = function(v0, v1, t) {
             return (1 - t) * v0 + t * v1;
         }
+        
+        // float2 --------------------
+        Math.float2 = function(x, y) {
+            this.x = x;
+            this.y = y;
+            return this;
+        }
 
-        // float4
+        Math.float2.prototype = {
+            x: 0,
+            y: 0
+        };
+        
+        // float3 --------------------
+        Math.float3 = function(x, y) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            return this;
+        }
+
+        Math.float3.prototype = {
+            x: 0,
+            y: 0,
+            z: 0
+        };
+
+        // float4 --------------------
         Math.float4 = function(r, g, b, a) {
             this.r = r;
             this.g = g;
